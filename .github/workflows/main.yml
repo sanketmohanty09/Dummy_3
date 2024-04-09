@@ -31,11 +31,11 @@ jobs:
       - name: Create server key file
         run: |
           touch server.key
-          echo -e "${{ secrets.SF_dev_SERVERKEY }}" >> server_dev.key  
+          echo -e "${{ secrets.SF_CICD_SERVERKEY_DEV }}" >> server_dev.key  
           
       # Authorization with DevHub
       - name: Authorize DevHub
-        run:  sfdx force:auth:jwt:grant --clientid "${{ secrets.SF_CLIENT_ID_dev }}" --username "${{ secrets.SF_dev_USERNAME }}" --jwtkeyfile server.key --setdefaultdevhubusername --instanceurl https://login.salesforce.com
+        run:  sfdx force:auth:jwt:grant --clientid "${{ secrets.SF_CLIENT_ID_dev }}" --username "${{ secrets.SF_CICD_USERNAME_DEV }}" --jwtkeyfile server.key --setdefaultdevhubusername --instanceurl https://login.salesforce.com
       # Deploy changes
       - name: Deploy changes
-        run: sfdx force:source:deploy -p NoProject/force-app/main/default -u ${{ secrets.SF_dev_USERNAME }} --json
+        run: sfdx force:source:deploy -p NoProject/force-app/main/default -u ${{ secrets.SF_CICD_USERNAME_DEV }} --json
