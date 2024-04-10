@@ -13,6 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug Information
+        run: |
+          echo "Current directory contents:"
+          ls -al
+          echo "GitHub Workspace Contents:"
+          ls -al $GITHUB_WORKSPACE
+          echo "Environment Variables:"
+          env
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
