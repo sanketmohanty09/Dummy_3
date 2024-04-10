@@ -31,7 +31,7 @@ jobs:
       - name: Create server key file
         run: |
           touch server.key
-          echo -e "${{ secrets.SF_CICD_SERVERKEY }}" >> server_dev.key  
+          echo -e "${{ secrets.SF_CICD_SERVERKEY }}" >> server.key  
           
       # Authorization with DevHub
       - name: Authorize DevHub
