@@ -1,0 +1,25 @@
+name: Create PR to QA
+
+on:
+  push:
+    branches:
+      - dev  # Trigger workflow on push to dev branch
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate PR Title
+        run: |
+          git log --pretty='%s' -1 > title.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6  # Replace with desired action
+        with:
+          title: ${{ files.title.content.split('\n')[0] }}  # Use first line of commit message as title
+          body: ${{ github.event.commit.message }}  # Use commit message as body
+          branch: dev
+          base: qa
+          token: ${{ secrets.PAT_TOKEN }}
