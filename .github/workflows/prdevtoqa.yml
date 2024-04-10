@@ -17,9 +17,9 @@ jobs:
         id: check
         run: |
           prs=$(gh pr list --repo "$GITHUB_REPOSITORY" \
-              --json base_ref_name,head_ref_name \
+              --json base_ref,head_ref \
               --jq '
-                  map(select(.base_ref_name == "qa" and .head_ref_name == "dev"))
+                  map(select(.base_ref == "qa" and .head_ref == "dev"))
                   | length
               ')
           if ((prs > 0)); then
@@ -52,3 +52,4 @@ jobs:
                 labels: ['feature', 'automated pr']
             });
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
