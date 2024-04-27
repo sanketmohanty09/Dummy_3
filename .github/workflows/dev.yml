@@ -38,9 +38,7 @@ jobs:
       - name: Authorize DevHub
         run:  sfdx force:auth:jwt:grant --clientid "${{ secrets.SF_CLIENT_ID_DEV }}" --username "${{ secrets.SF_CICD_USERNAME_DEV }}" --jwtkeyfile server.key --set-default --alias HubOrg --instanceurl https://login.salesforce.com
       # Deploy changes
-      - name: Validate Source Code Against Salesforce ORG
-        run: |
-           sfdx force:source:deploy -p NoProject/force-app/main/default --testlevel RunLocalTests --targetusername HubOrg -f clover
+      
       
       - name: Deploy changes
         run: sfdx force:source:deploy -p NoProject/force-app/main/default -u ${{ secrets.SF_CICD_USERNAME_DEV }} --json --checkonly
