@@ -39,7 +39,7 @@ jobs:
         run:  sfdx force:auth:jwt:grant --clientid "${{ secrets.SF_CLIENT_ID_DEV }}" --username "${{ secrets.SF_CICD_USERNAME_DEV }}" --jwtkeyfile server.key --set-default --alias HubOrg --instanceurl https://login.salesforce.com
       # Deploy changes
       - name: Validate Changes 
-        run: sfdx force:source:deploy  -c -w 1 -p NoProject/force-appmain/defaul -u HubOrg
+        run: sfdx force:source:deploy  -c -w 1 -p NoProject/force-app/main/default -u HubOrg
       
       - name: Deploy changes
         run: sfdx force:source:deploy -p NoProject/force-app/main/default -u ${{ secrets.SF_CICD_USERNAME_DEV }} --json --checkonly
