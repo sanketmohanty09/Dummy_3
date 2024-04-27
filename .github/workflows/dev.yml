@@ -40,7 +40,7 @@ jobs:
       # Deploy changes
       - name: Validate Source Code Against Salesforce ORG
         run: |
-          sf project deploy start --source-dir force-app --test-level RunLocalTests --target-org  secrets.SF_CICD_USERNAME_DEV --coverage-formatters clover
+          sfdx project deploy start --source-dir force-app --test-level RunLocalTests --target-org  secrets.SF_CICD_USERNAME_DEV --coverage-formatters clover
       
       - name: Deploy changes
         run: sfdx force:source:deploy -p NoProject/force-app/main/default -u ${{ secrets.SF_CICD_USERNAME_DEV }} --json --checkonly
