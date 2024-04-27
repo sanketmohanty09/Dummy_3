@@ -27,16 +27,30 @@ jobs:
       # Ensure sfdx is added to PATH
       - name: Add Salesforce CLI to PATH
         run: echo 'export PATH=$PATH:/usr/local/bin/sfdx/bin' >> $HOME/.bashrc && source $HOME/.bashrc
-
+      
+      - name: Install the sfdx-git-delta plugin
+        run: echo 'y' | sf plugins install sfdx-git-delta
       # Create server key file
       - name: Create server key file
         run: |
           touch server.key
           echo -e "${{ secrets.SF_CICD_SERVERKEY_DEV }}" >> server_dev.key  
-          
+        
+  
+      
       # Authorization with DevHub
       - name: Authorize DevHub
         run:  sfdx force:auth:jwt:grant --clientid "${{ secrets.SF_CLIENT_ID_DEV }}" --username "${{ secrets.SF_CICD_USERNAME_DEV }}" --jwtkeyfile server.key --set-default --alias HubOrg --instanceurl https://login.salesforce.com
+        # Authorization with DevHub
+
+      # Generation of package.xml
+      - name: Generate the package.xml for delta files
+        run:  |
+          mkdir delta
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output "./delta" --ignore-whitespace -d -i .sgdignore
+          echo "--- package.xml generated with added and modified metadata ---"
+          cat delta/package/package.xml
+      
       # Deploy changes
       - name: Validate Changes 
         run: sfdx force:source:deploy  -c -w 1 -p NoProject/force-app/main/default -u HubOrg
